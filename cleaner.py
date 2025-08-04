@@ -1,18 +1,15 @@
-import os
-import time
+import os, time
 
-def clean_tmp_folder(folder='/tmp', max_age_hours=24):
+def hapus_file_tmp(path='/tmp'):
+    hitung = 0
     now = time.time()
-    max_age = max_age_hours * 3600
-    deleted_files = []
-
-    for root, _, files in os.walk(folder):
-        for name in files:
-            file_path = os.path.join(root, name)
-            if os.path.isfile(file_path) and now - os.path.getmtime(file_path) > max_age:
-                try:
+    for root, dirs, files in os.walk(path):
+        for f in files:
+            file_path = os.path.join(root, f)
+            try:
+                if os.stat(file_path).st_mtime < now - 86400:
                     os.remove(file_path)
-                    deleted_files.append(file_path)
-                except Exception:
-                    pass
-    return deleted_files
+                    hitung += 1
+            except:
+                continue
+    return f"[CLEAN] Dihapus {hitung} file dari {path}."

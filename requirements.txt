@@ -1,4 +1,4 @@
 flask
-requests
 python-dotenv
-psutil
+requests
+python-telegram-bot==20.0

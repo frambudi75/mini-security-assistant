@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head><title>Dashboard</title></head>
+<body>
+<h2>Security Assistant Dashboard</h2>
+
+<form method="post">
+  <button type="submit" name="action" value="scan">🔍 Jalankan Scan Sekarang</button>
+</form>
+
+{% if result %}
+<h3>📄 Hasil Scan Manual:</h3>
+<pre>{{ result }}</pre>
+{% endif %}
+
+<hr>
+<h3>📜 Log Keseluruhan:</h3>
+<pre>{{ logs }}</pre>
+</body>
+</html>

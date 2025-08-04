@@ -1,13 +1,12 @@
 import os
 
-SUSPICIOUS_EXTENSIONS = ['.php', '.sh', '.py', '.exe', '.js']
-
-def scan_directory(path):
-    found = []
-    for root, _, files in os.walk(path):
-        for file in files:
-            if any(file.endswith(ext) for ext in SUSPICIOUS_EXTENSIONS):
-                full_path = os.path.join(root, file)
-                if os.path.getsize(full_path) > 0:
-                    found.append(full_path)
-    return found
+def scan_file_mencurigakan(direktori='/var/www'):
+    mencurigakan = []
+    ekstensi_berbahaya = ['.php', '.sh', '.exe', '.py']
+    for root, dirs, files in os.walk(direktori):
+        for f in files:
+            if any(f.endswith(ext) for ext in ekstensi_berbahaya):
+                mencurigakan.append(os.path.join(root, f))
+    if mencurigakan:
+        return f"[SCAN] Ditemukan {len(mencurigakan)} file mencurigakan."
+    return "[SCAN] Tidak ada file mencurigakan."

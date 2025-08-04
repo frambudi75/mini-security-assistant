@@ -1,15 +1,18 @@
 import os
 import requests
 from dotenv import load_dotenv
-
 load_dotenv()
 
-def send_alert(message):
-    token = os.getenv("TELEGRAM_TOKEN")
-    chat_id = os.getenv("TELEGRAM_CHAT_ID")
-    if not token or not chat_id:
-        return
+TOKEN = os.getenv("TELEGRAM_TOKEN")
+CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
-    data = {"chat_id": chat_id, "text": message}
-    requests.post(url, data=data)
+def kirim_notifikasi_telegram(pesan):
+    if not TOKEN or not CHAT_ID:
+        return "[NOTIF] Token/chat ID tidak ditemukan"
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    data = {"chat_id": CHAT_ID, "text": pesan}
+    try:
+        requests.post(url, data=data)
+        return "[NOTIF] Pesan dikirim."
+    except:
+        return "[NOTIF] Gagal mengirim pesan."

@@ -1,19 +1,8 @@
 import subprocess
-import re
 
-def detect_brute_force(log_file='/var/log/auth.log', threshold=5):
-    ip_count = {}
+def deteksi_bruteforce_ssh():
     try:
-        with open(log_file) as f:
-            for line in f:
-                if "Failed password" in line:
-                    ip_match = re.search(r"from (\\d+\\.\\d+\\.\\d+\\.\\d+)", line)
-                    if ip_match:
-                        ip = ip_match.group(1)
-                        ip_count[ip] = ip_count.get(ip, 0) + 1
-        return [ip for ip, count in ip_count.items() if count >= threshold]
-    except FileNotFoundError:
-        return []
-
-def block_ip(ip):
-    subprocess.run(["iptables", "-A", "INPUT", "-s", ip, "-j", "DROP"])
+        hasil = subprocess.getoutput("grep 'Failed password' /var/log/auth.log | awk '{print $(NF-3)}' | sort | uniq -c | sort -nr | head")
+        return f"[FIREWALL] IP mencurigakan:\n{hasil}"
+    except Exception as e:
+        return f"[FIREWALL] Gagal analisa SSH: {e}"
